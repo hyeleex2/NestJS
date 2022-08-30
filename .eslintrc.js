@@ -26,7 +26,7 @@ module.exports = {
       {
         endOfLine: 'auto', 
         useTabs: false,
-        printWidth: '80'
+        printWidth:  80
       },
     ],
   },
