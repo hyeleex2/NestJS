@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
-import { BoardStatus } from "./board-status.enum";
-import { CreateBoardDto } from "./dto/create-board.dto";
-import { BoardRepository } from "./board.repository";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Board } from "./board.entity";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { BoardStatus } from './board-status.enum';
+import { CreateBoardDto } from './dto/create-board.dto';
+import { BoardRepository } from './board.repository';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Board } from './board.entity';
 
 @Injectable()
 export class BoardsService {
@@ -26,14 +26,12 @@ export class BoardsService {
     return found;
   }
 
-  // getAllBoards(): Board[] {
-  //   return this.boards;
-  // }
+  async getAllBoards(): Promise<Board[]> {
+    return await this.boardRepository.find();
+  }
 
   async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
     const { title, description } = createBoardDto;
-    console.log(title);
-    console.log(description);
     const board = this.boardRepository.create({
       title,
       description,
@@ -44,13 +42,18 @@ export class BoardsService {
   }
 
   async deleteBoardById(id: number): Promise<void> {
-    const found = this.getBoardById(id);
-    await this.boardRepository.delete(id);
+    const result = await this.boardRepository.delete(id);
+    // db에 알맞은 데이터가 없는 경우
+    if (result.affected === 0) {
+      throw new NotFoundException(`${id} 게시물 없음`);
+    }
   }
 
-  // updateBoardStatus(id: string, status: BoardStatus): Board {
-  //   const board = this.getBoardById(id);
-  //   board.status = status;
-  //   return board;
-  // }
+  async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
+    const board = await this.getBoardById(id);
+    // status 변경
+    board.status = status;
+    await this.boardRepository.save(board);
+    return board;
+  }
 }
