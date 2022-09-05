@@ -10,6 +10,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { AuthService } from './auth.service';
 import { AuthCredentialDto } from './dto/auth-credentials.dto';
+import { GetUser } from './get-user.decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -31,7 +33,7 @@ export class AuthController {
   // UseGuards 사용자 인증 관련 미들웨어 사용
   // 토큰이 유효하지 않은 경우 알아서 401 인증 에러 떨굼
   @UseGuards(AuthGuard())
-  test(@Req() req) {
-    console.log(req);
+  test(@GetUser() user: User) {
+    console.log(user);
   }
 }
