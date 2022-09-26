@@ -27,8 +27,13 @@ export class BoardsService {
     return found;
   }
 
-  async getAllBoards(): Promise<Board[]> {
-    return await this.boardRepository.find();
+  async getAllBoards(user: User): Promise<Board[]> {
+    // board 테이블에 query builder 생성
+    const query = this.boardRepository.createQueryBuilder('board');
+    query.where('board.userId = :userId', { userId: user.id });
+    const boards = query.getMany();
+    return boards;
+    // return await this.boardRepository.find();
   }
 
   createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board> {

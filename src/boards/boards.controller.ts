@@ -26,9 +26,9 @@ export class BoardsController {
   constructor(private boardService: BoardsService) {}
 
   // 실제 경로는 '/boards'로 셋팅됨
-  @Get('/')
-  getAllBoard(): Promise<Board[]> {
-    return this.boardService.getAllBoards();
+  @Get()
+  getAllBoards(@GetUser() user: User): Promise<Board[]> {
+    return this.boardService.getAllBoards(user);
   }
 
   @Post()
