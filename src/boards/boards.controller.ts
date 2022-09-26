@@ -47,8 +47,10 @@ export class BoardsController {
 
   // ParseIntPipe 파이프 사용 (js integer로 넘어오는지 확인)
   @Delete('/:id')
-  deleteBoardById(@Param('id', ParseIntPipe) id): Promise<void> {
-    return this.boardService.deleteBoardById(id);
+  deleteBoardById(@Param('id', ParseIntPipe) id,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return this.boardService.deleteBoardById(id, user);
   }
 
   @Patch('/:id/status')
