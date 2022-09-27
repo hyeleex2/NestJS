@@ -42,7 +42,6 @@ export class BoardsService {
 
   async deleteBoardById(id: number, user: User): Promise<void> {
     const result = await this.boardRepository.delete({ id, user });
-    console.log('result : ', result);
     // db에 알맞은 데이터가 없는 경우
     if (result.affected === 0) {
       throw new NotFoundException(`${id} 게시물 없음`);
