@@ -1,7 +1,7 @@
-import { DynamicModule, Provider } from "@nestjs/common";
-import { getDataSourceToken } from "@nestjs/typeorm";
-import { DataSource } from "typeorm";
-import { TYPEORM_EX_CUSTOM_REPOSITORY } from "./typeorm-ex.decorator";
+import { DynamicModule, Provider } from '@nestjs/common';
+import { getDataSourceToken } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
+import { TYPEORM_EX_CUSTOM_REPOSITORY } from './typeorm-ex.decorator';
 
 // dynamic module 만들기
 export class TypeOrmExModule {

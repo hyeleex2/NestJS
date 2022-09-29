@@ -4,7 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { User } from '../user.entity';
 import { UserRepository } from '../user.repository';
+import * as config from 'config';
 
+const jwtConfig = config.get('jwt');
 // 어디에서나 jwt strategy를 사용하기 위해 injectable 데코레이터 이용
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // super : 부모 class의 것을 사용
     super({
       // 토큰의 유효성 확인을 위해 secret key 넣기
-      secretOrKey: 'SuperSecret',
+      secretOrKey: process.env.JWT_SECRET || jwtConfig.secret,
       // 어디서 JWT 토큰을 가져오는 지 명시
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
